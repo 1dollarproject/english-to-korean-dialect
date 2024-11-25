@@ -38,5 +38,5 @@ jobs:
       - name: S3 기존 파일들 전체 삭제 후 새로 업로드
         run: |
           aws s3 rm --recursive s3://english-to-korean-dialect
-          aws s3 cp ./next s3://english-to-korean-dialect/ --recursive
+          aws s3 cp ./.next s3://english-to-korean-dialect/ --recursive
 
