@@ -39,6 +39,8 @@ const dialectPrompts = {
 
 export async function POST(request: Request) {
   try {
+    const body = await request.json();
+    console.log('Request body:', body); // JSON 파싱 확인
     const { text, dialect } = await request.json() as { text: string, dialect: keyof typeof dialectPrompts }
 
     if (!text || !dialect) {
@@ -97,7 +99,7 @@ export async function POST(request: Request) {
       convertedText
     })
   } catch (error) {
-    console.error('Error details:', error instanceof Error ? error.message : String(error))
+    console.log('Error details:', error instanceof Error ? error.message : String(error))
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : '변환 중 오류가 발생했습니다.',
