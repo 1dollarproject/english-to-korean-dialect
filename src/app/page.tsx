@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 
 export default function DialectConverter() {
   const [inputText, setInputText] = useState('')
-  const [audioUrl, setAudioUrl] = useState('')
+  const [audioData, setAudioData] = useState('')
   const [convertedText, setConvertedText] = useState('')
   const [selectedDialect, setSelectedDialect] = useState('jeju')
   const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +41,7 @@ export default function DialectConverter() {
         throw new Error(data.error || '변환 중 오류가 발생했습니다')
       }
 
-      setAudioUrl(data.audioUrl)
+      setAudioData(data.audioData)
       setConvertedText(data.convertedText)
       toast.success('변환이 완료되었습니다')
     } catch (error) {
@@ -88,20 +88,24 @@ export default function DialectConverter() {
           </Button>
         </form>
 
-        {audioUrl && (
+        {audioData && (
           <div className="mt-6 space-y-4">
             <div className="p-4 bg-gray-50 rounded-lg">
-              <h2 className="text-lg font-semibold mb-2">변환 결과</h2>
               <p className="text-gray-700 mb-4">{convertedText}</p>
               <audio controls className="w-full">
-                <source src={audioUrl} type="audio/mpeg" />
+                <source src={audioData} type="audio/mpeg" />
                 브라우저가 오디오 재생을 지원하지 않습니다.
               </audio>
             </div>
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => window.open(audioUrl, '_blank')}
+              onClick={() => {
+                const link = document.createElement('a')
+                link.href = audioData
+                link.download = 'dialect-audio.mp3'
+                link.click()
+              }}
             >
               오디오 파일 다운로드
             </Button>

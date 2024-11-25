@@ -52,31 +52,15 @@ export async function POST(request: Request) {
       input: convertedText || text,
     })
 
+    // 오디오 데이터를 Base64로 변환
     const audioBuffer = Buffer.from(await speech.arrayBuffer())
+    const audioBase64 = audioBuffer.toString('base64')
+
     console.log('TTS generation completed')
-
-    // 파일 저장 경로 설정
-    const publicDir = path.join(process.cwd(), 'public')
-    const audioDir = path.join(publicDir, 'audio')
-    const audioFileName = `dialect-${Date.now()}.mp3`
-    const audioPath = path.join(audioDir, audioFileName)
-
-    try {
-      // audio 디렉토리 생성 로직 추가
-      await mkdir(audioDir, { recursive: true })
-      await writeFile(audioPath, audioBuffer)
-      console.log('Audio file saved:', audioPath)
-    } catch (error) {
-      console.error('Error saving audio file:', error)
-      return NextResponse.json(
-        { error: '오디오 파일 저장 중 오류가 발생했습니다.' },
-        { status: 500 }
-      )
-    }
 
     return NextResponse.json({
       success: true,
-      audioUrl: `/audio/${audioFileName}`,
+      audioData: `data:audio/mpeg;base64,${audioBase64}`,
       convertedText
     })
   } catch (error) {
