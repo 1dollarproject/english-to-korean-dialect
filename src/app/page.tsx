@@ -21,6 +21,8 @@ export default function DialectConverter() {
       return
     }
 
+    setAudioData('')
+    setConvertedText('')
     setIsLoading(true)
 
     try {
