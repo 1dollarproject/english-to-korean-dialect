@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
